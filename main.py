@@ -5,9 +5,8 @@ import httpx
 
 from rich import print
 
-with open('config.json', encoding='utf-8') as f, open('proxies.txt', encoding='utf-8') as p:
+with open('config.json', encoding='utf-8') as f:
     config = json.load(f)
-    proxies = p.read().splitlines()
 
 CONNECTIONS = int(input('Number of connections to use (1-100): '))
 
