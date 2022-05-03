@@ -1,6 +1,7 @@
 {
-    "cookie": "",
+    "cookie": "_|WARNING:-DO-NOT-SHARE-THIS.",
     "player_id": 123456789,
     "giving": [123],
-    "receiving": [321]
+    "receiving": [321],
+    "rotating_proxy": "http://user-rotate:pass@p.webshare.io:80/"
   }

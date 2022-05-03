@@ -5,8 +5,9 @@ import httpx
 
 from rich import print
 
-with open('config.json', encoding='utf-8') as f:
+with open('config.json', encoding='utf-8') as f, open('proxies.txt', encoding='utf-8') as p:
     config = json.load(f)
+    proxies = p.read().splitlines()
 
 CONNECTIONS = int(input('Number of connections to use (1-100): '))
 
@@ -14,6 +15,9 @@ limits = httpx.Limits(max_connections=CONNECTIONS)
 client = httpx.AsyncClient(
     cookies={'.ROBLOSECURITY': config.get('cookie')},
     limits=limits,
+    proxies={
+        "all://trades.roblox.com": config['rotating_proxy']
+    },
     timeout=None
 )
 
@@ -77,7 +81,7 @@ async def check(player_id):
     uaids = await fetch_uaids(player_id, receiving)
     fprint('INFO', 'blue', f'Checking {player_id}')
     if await can_trade(player_id) and uaids:
-        fprint('SUCESS', 'green', f'Queued trade with {player_id}')
+        fprint('SUCCESS', 'green', f'[{queue.qsize()}] Queued trade with {player_id}')
         await queue.put({
             'offers': [
                 {'userId': my_id, 'userAssetIds': my_uaids},
