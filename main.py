@@ -123,4 +123,4 @@ async def main():
         *(fetch_owners(i) for i in set(receiving))
     )
 
-asyncio.get_event_loop().run_until_complete(main())
+asyncio.run(main())
