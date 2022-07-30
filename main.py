@@ -36,7 +36,10 @@ async def fetch_owners(item_id, cursor=''):
     req = await client.get(f'https://inventory.roblox.com/v2/assets/{item_id}/owners?sortOrder=Desc&limit=100&cursor={cursor}')
     res = req.json()
 
-    next_cursor, coros = res.get('nextPageCursor', None), []
+    next_cursor, data, coros = res.get('nextPageCursor', None), res.get('data', None), []
+    if not data:
+        return
+
     for i in res['data']:
         owner = i.get('owner', None)
         if not owner:
@@ -64,11 +67,11 @@ async def fetch_uaids(player_id, desired):
 
     for i in data:
         item_id = i.get('assetId')
-        if holder.count(item_id) < desired.count(item_id):
+        if holder.count(item_id) < receiving.count(item_id):
             uaids.append(i['userAssetId'])
             holder.append(item_id)
 
-    return uaids
+    return len(holder) == len(desired) and uaids
 
 
 async def can_trade(player_id):
